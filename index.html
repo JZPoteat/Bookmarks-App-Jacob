@@ -5,19 +5,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Quiz App</title>
+  <title>Bookmark App</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
     type="text/css" />
-  <link href="app.css" rel="stylesheet" type="text/css" />
+  <link href="main.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
   <header>
-    <h1>The name of your quiz</h1>
+    <h1>Bookmark App</h1>
+    <section class="buttons">
+      <button type="button">Add bookmark</button>
+      <section class="rating-filter">Filter by:
+          <select>
+              <option value='1'>1</option>
+              <option value='2'>2</option>
+              <option value='3'>3</option>
+              <option value='4'>4</option>
+              <option value='5'>5</option>   
+          </select>
+        </section>
+    </section>
   </header>
-  <main></main>
+  <main>
+    <ul class='bookmark-list'></ul>
+  </main>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
-  <script src="app.js"></script>
-</body>
-
+    <script src="index.js"></script>
+</body>  
 </html>
