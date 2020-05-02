@@ -17,7 +17,7 @@
     justify-content: space-evenly;
   }
   
-  ul {
+main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
