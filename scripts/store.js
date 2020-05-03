@@ -10,10 +10,23 @@ function addBookmark(item) {
   const expandedKey = {expanded: false};
   Object.assign(expandedKey, item);
   store.bookmarks.push(expandedKey);
+  console.log(store.bookmarks);
 }
 
+function findAndToggleExpanded(id) {
+const currentItem = findById(id);
+console.log(currentItem);
+currentItem.expanded = !currentItem.expanded;
+}
+
+function findById(id) {
+  console.log('findById ran');
+  return store.bookmarks.find(currentItem => currentItem.id === id);
+}
 
 export default {
   bookmarks: store.bookmarks,
   addBookmark,
+  findAndToggleExpanded,
+  findById
 };

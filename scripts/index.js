@@ -1,9 +1,13 @@
-
 import api from './api.js';
 import store from './store.js';
 import bookmarkList from './bookmark-list.js';
 
-
+const testItem = {
+  title: 'google',
+  url: 'https://google.com',
+  desc: 'google page',
+  rating: 5
+}
 function main() {
   api.getItems()
     .then(res => res.json())
@@ -16,33 +20,7 @@ function main() {
 }
 
 $(main);
-// 
-// 
-  
 
-/**
-   * 
-   * Technical requirements:
-   * 
-   * Your app should include a render() function, that regenerates the view each time the store is updated. 
-   * See your course material, consult your instructor, and reference the slides for more details.
-   *
-   * NO additional HTML elements should be added to the index.html file.
-   *
-   * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
-   *
-   * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
-   * 
-   */
-  
-/********** TEMPLATE GENERATION FUNCTIONS **********/
-  
-// These functions return HTML templates
-  
-/********** RENDER FUNCTION(S) **********/
-  
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-  
-/********** EVENT HANDLER FUNCTIONS **********/
-  
-// These functions handle events (submit, click, etc)
+//Next time:
+//Figure out how to toggle the form appearing on the screen.  
+//It works to add button, but if you want to cancel, the add button no longer works.
