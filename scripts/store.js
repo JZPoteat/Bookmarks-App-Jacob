@@ -14,9 +14,14 @@ function addBookmark(item) {
 }
 
 function findAndToggleExpanded(id) {
-const currentItem = findById(id);
-console.log(currentItem);
-currentItem.expanded = !currentItem.expanded;
+  const currentItem = findById(id);
+  console.log(currentItem);
+  currentItem.expanded = !currentItem.expanded;
+}
+
+function findAndDelete(id) {
+  store.bookmarks = store.bookmarks.filter(currentItem => currentItem.id !== id);
+  console.log(store.bookmarks);
 }
 
 function findById(id) {
@@ -28,5 +33,6 @@ export default {
   bookmarks: store.bookmarks,
   addBookmark,
   findAndToggleExpanded,
-  findById
+  findById,
+  findAndDelete
 };

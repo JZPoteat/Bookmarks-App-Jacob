@@ -6,7 +6,7 @@ function getItems () {
 
 function createItem(bookmark) {
   console.log('createItem ran');
-console.log(bookmark);
+  console.log(bookmark);
   return fetch(`${BASE_URL}`, {
     method: 'POST',
     headers: {
@@ -16,12 +16,15 @@ console.log(bookmark);
   });
 }
 
+function deleteItem(id) {
+  return fetch(`${BASE_URL}/${id}`, {
+    method: 'DELETE'
+  }); 
 
+}
 
-
-
-  
 export default {
   getItems,
   createItem,
+  deleteItem,
 };
