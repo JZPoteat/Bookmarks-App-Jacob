@@ -16,7 +16,5 @@ function main() {
 $(main);
 
 
-
-//Figure out event listener for the filter selector
 //Error handling
-//Add a remove button
+

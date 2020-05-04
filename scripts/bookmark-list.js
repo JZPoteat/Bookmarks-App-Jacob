@@ -5,46 +5,87 @@ function render() {
   console.log(store.bookmarks);
   console.log("Render Function ran");
   let bookmarks = [...store.bookmarks];
-  let html = generateBookmarkItemString(bookmarks);  
+  let html = '';
+  if(store.adding) {
+    html += generateAddForm();
+  }
+  else if (store.filter !== 0) {
+    html += generateButtons() + filterByRating(bookmarks);  
+  }
+  else {
+    html += generateButtons() + generateBookmarkItemString(bookmarks);  
+  }
   $('main').html(html);  
 }
 
 function generateAddForm() {
 //function returns html to generate the form to submit a new form
   return ` <section class="form-area"><form id="bookmark-form">
-<label for="title">Add a New Bookmark</label>
+<label for="title">Add a New Bookmark:</label>
 <input type="text" name="url" class="entry-item" placeholder="http://samplelink.com" required>
 <input type="text" name="title" class="entry-item" placeholder="Sample Title" required>
 <input type="text" name="rating" class="entry-item" placeholder="Enter a rating (out of 5)" required>
-<input type="text" name="desc" class="entry-item" placeholder="Add a description " required>
-<button type="button" class="cancel-button">Cancel</button>
-<button type="submit"class="add-item-button">Create</button>
+<input type="text" name="desc" class="entry-item" id="description-input" placeholder="Add a description " required>
+<section class="form-buttons">
+  <button type="button" class="cancel-button">Cancel</button>
+  <button type="submit"class="add-item-button">Create</button>
+</section>
 </form>
 </section>`;
 }
-function handleAddBookmarkButton() {
-  $('header').on('click','.add-button', event => {
-    console.log("button clicked");
-    removeClassHidden();
-    
-    // toggleStoreAdding();
+
+function handleFilterSelector() {
+  $('main').select('.Rating-list', event => {
+    const newRating = $('.Rating-list').val();
+    store.filter = newRating;
+    console.log(store.filter);
+    render();
   });
 }
 
-function removeClassHidden() {
-  $('#add-bookmark').removeClass('hidden');
+function filterByRating(bookmarks) {
+  let html = '';
+  bookmarks.forEach(item => {
+    if(item.rating >= store.filter) {
+      html += generateBookmarkElement(item);
+    }
+  });
+  return html;
 }
 
+function generateButtons() {
+  return `<section class="buttons">
+  <button type="button" class="add-button">Add bookmark</button>
+  <section class="rating-filter">Filter by:
+      <select class="Rating-list">
+        <option value='0'>${store.filter}</option>
+          <option value='1'>1</option>
+          <option value='2'>2</option>
+          <option value='3'>3</option>
+          <option value='4'>4</option>
+          <option value='5'>5</option>   
+      </select>
+    </section>
+</section>`;
+}
+function handleAddBookmarkButton() {
+  $('main').on('click','.add-button', event => {
+    console.log("button clicked");
+    toggleStoreAdding();
+    render();
+  });
+}
 
-function addClassHidden() {
-  $('#add-bookmark').addClass('hidden');
+function toggleStoreAdding() {
+  store.adding = !store.adding;
 }
 
 function handleCancelButton() {
-  $('header').on('click','.cancel-button', event => {
+  $('main').on('click','.cancel-button', event => {
     console.log('cancel button clicked');
     clearBookmarkForm();
-    addClassHidden();
+    toggleStoreAdding();
+    render();
   });
 }
 
@@ -55,7 +96,7 @@ function clearBookmarkForm () {
 
 function handleNewItemSubmit () {
   console.log('handleNewItemSubmit called');
-  $('#bookmark-form').submit(function (event) {
+  $('main').submit('#bookmark-form', function (event) {
     event.preventDefault();
     const newItem = serializeJson($('#bookmark-form')[0]);
     api.createItem(newItem)
@@ -63,7 +104,7 @@ function handleNewItemSubmit () {
       .then(item => {
         store.addBookmark(item);
         clearBookmarkForm();
-        addClassHidden();
+        toggleStoreAdding();
         render();
       });
   });
@@ -79,7 +120,7 @@ function serializeJson(form) {
 
 
 function generateExpandedItem(item) {
-  return `<section class='expanded-item'>
+  return `<section class='bookmark-element expanded-item'>
                 <li data-item-id=${item.id}>${item.title}</li>
                 <li data-item-id=${item.id}>${item.rating}</li>
                 <li data-item-id=${item.id}><a href='${item.url}' target='_blank'>${item.url}</a></li>
@@ -123,7 +164,6 @@ function handleDeleteItemClicked () {
     const id = getItemIdFromDeleteButton(event.currentTarget);
     console.log(id);
     api.deleteItem(id)
-      .then(res => res.json())
       .then(() => {
         store.findAndDelete(id);
         render();
@@ -150,6 +190,7 @@ function bindEventListeners () {
   handleBookmarkClick();
   handleCancelButton();
   handleDeleteItemClicked();
+  handleFilterSelector();
 
 }
 

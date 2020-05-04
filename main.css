@@ -9,14 +9,30 @@
 
 * {
     box-sizing: border-box;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 20px;
+    color:  black;
   }
   
+  body {
+    margin-top: 10%;
+    background:  url('Background-image.jpg');
+    background-size: cover;
+    height: auto;
+  }
+
   .buttons {
-    background: darkgray;
+
+    margin: 35px;
     display: flex;
     justify-content: space-evenly;
+    
   }
-  
+
+.add-button {
+  margin-right:  15px;
+}  
+
 main {
     display: flex;
     flex-direction: column;
@@ -24,15 +40,38 @@ main {
     align-items: center;
     list-style-type: none;
   }
-  li {
+li {
+  margin-bottom: 15px;
+}
+  .bookmark-element {
     background-color: lightgray;
+    text-align: center;
+  }
+
+
+  .entry-item {
     margin-bottom: 10px;
+    border: 5px solid slategray;
+    border-radius: 15px;
+    height: 50px;
+    word-wrap: break-word;
+  }
+
+  #description-input {
+    height: 100px;
   }
   
   p {
     text-align: center;
   }
 
-  .hidden {
-    display: none;
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
   }
+
+#bookmark-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
