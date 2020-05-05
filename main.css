@@ -10,28 +10,44 @@
 * {
     box-sizing: border-box;
     font-family: 'Fira Sans', sans-serif;
-    font-size: 20px;
+    font-size: calc(.75em + 1vw);
     color:  black;
-  }
+}
   
-  body {
-    margin-top: 10%;
-    background:  url('Background-image.jpg');
-    background-size: cover;
-    height: auto;
-  }
+body {
+  margin-top: 10%;
+  background:  url('Background-image.jpg');
+  background-size: cover;
+  height: auto;
+}
 
-  .buttons {
+button {
+  border-radius: 8px;
+  background-color: #d6b220
+}
 
-    margin: 35px;
-    display: flex;
-    justify-content: space-evenly;
+button:hover {
+  background-color: #a3850a;
+}
+
+.buttons {
+  margin: 35px;
+  display: flex;
+  justify-content: space-evenly;
     
-  }
+}
 
 .add-button {
   margin-right:  15px;
 }  
+
+.error-container, .delete-button {
+  background-color: tomato;
+  border-radius: 6px;
+}
+#main-title {
+  font-family: 'Hind Vadodara', sans-serif;
+}
 
 main {
     display: flex;
@@ -39,13 +55,15 @@ main {
     justify-content: space-between;
     align-items: center;
     list-style-type: none;
-  }
+}
 li {
   margin-bottom: 15px;
 }
   .bookmark-element {
-    background-color: lightgray;
+    background-color: #eddada;
     text-align: center;
+    border-radius: 8px;
+    margin-bottom: 25px;
   }
 
 

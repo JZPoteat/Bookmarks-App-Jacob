@@ -34,16 +34,8 @@ function generateAddForm() {
 </section>`;
 }
 
-function handleFilterSelector() {
-  $('main').select('.Rating-list', event => {
-    const newRating = $('.Rating-list').val();
-    store.filter = newRating;
-    console.log(store.filter);
-    render();
-  });
-}
-
 function filterByRating(bookmarks) {
+//Function is called after the user selects a filter, and filters what the user sees in the DOM based on the user's input
   let html = '';
   bookmarks.forEach(item => {
     if(item.rating >= store.filter) {
@@ -53,22 +45,39 @@ function filterByRating(bookmarks) {
   return html;
 }
 
+function handleFilterSelector() {
+  //Defines an event listener that listens for when the user selects a filter, and changes the DOM appropriately
+  $('main').change('.Rating-list', event => {
+    const newRating = $('.Rating-list').val();
+    store.filter = newRating;
+    render();
+  });
+}
+
+
+
 function generateButtons() {
+//Returns a string of HTML that defines the "Add Bookmark" buttons and the Filter selector
   return `<section class="buttons">
   <button type="button" class="add-button">Add bookmark</button>
   <section class="rating-filter">Filter by:
       <select class="Rating-list">
-        <option value='0'>${store.filter}</option>
-          <option value='1'>1</option>
-          <option value='2'>2</option>
-          <option value='3'>3</option>
-          <option value='4'>4</option>
-          <option value='5'>5</option>   
+          ${generateFilterList()}  
       </select>
     </section>
 </section>`;
 }
+
+function generateFilterList() {
+  //function generates the html for the filter list and returns string of HTML
+  let html = '';
+  for(let i = 0; i <= 5; i++) {
+    (i === 0 ? html += `<option value='0'>0</option>` : html += `<option value='${i}'>${i}+</option>` );
+  }
+  return html;
+}
 function handleAddBookmarkButton() {
+//Defines event listener for when the user clicks the add button, toggles store.adding and renders the page
   $('main').on('click','.add-button', event => {
     console.log("button clicked");
     toggleStoreAdding();
@@ -77,10 +86,12 @@ function handleAddBookmarkButton() {
 }
 
 function toggleStoreAdding() {
+//Toggles store.adding
   store.adding = !store.adding;
 }
 
 function handleCancelButton() {
+//Defines event listner for the cancel button, clears the form of input, toggles store.adding, and renders the page
   $('main').on('click','.cancel-button', event => {
     console.log('cancel button clicked');
     clearBookmarkForm();
@@ -90,6 +101,7 @@ function handleCancelButton() {
 }
 
 function clearBookmarkForm () {
+//Clears entries in the bookmark form
   $('.entry-item').val('');
 }
 
@@ -100,16 +112,31 @@ function handleNewItemSubmit () {
     event.preventDefault();
     const newItem = serializeJson($('#bookmark-form')[0]);
     api.createItem(newItem)
-      .then(res => res.json())
+ 
       .then(item => {
         store.addBookmark(item);
         clearBookmarkForm();
         toggleStoreAdding();
         render();
+      })
+      .catch(error => {
+        $('main').prepend(generateError(error.message));
+        console.error(error);
       });
   });
 }
 
+function generateError(message) {
+//generates HTML required for 
+  return `<p class="error-container">${message}<br>Please try again.</p>`;
+}
+
+function handleCloseError() {
+//removes error statement from the page
+  $('main').on('click','.error-container', () => {
+    $('.error-container').empty();
+  });
+}
 
 function serializeJson(form) {
   const formData = new FormData(form);
@@ -191,6 +218,7 @@ function bindEventListeners () {
   handleCancelButton();
   handleDeleteItemClicked();
   handleFilterSelector();
+  handleCloseError();
 
 }
 

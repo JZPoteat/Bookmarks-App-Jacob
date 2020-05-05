@@ -7,17 +7,27 @@ function getItems () {
 function createItem(bookmark) {
   console.log('createItem ran');
   console.log(bookmark);
-  return fetch(`${BASE_URL}`, {
+  return apiCall(`${BASE_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: bookmark
-  });
+  });    
+}
+
+function apiCall (url, options) {
+  return fetch(url, options)
+    .then(res => {
+      if (!res.ok) {
+        return res.json().then(json => Promise.reject(json))
+      }
+      return res.json();
+    });
 }
 
 function deleteItem(id) {
-  return fetch(`${BASE_URL}/${id}`, {
+  return apiCall(`${BASE_URL}/${id}`, {
     method: 'DELETE'
   }); 
 
