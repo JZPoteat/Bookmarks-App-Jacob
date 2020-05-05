@@ -14,17 +14,20 @@ function addBookmark(item) {
 }
 
 function findAndToggleExpanded(id) {
+  //Finds the id for item clicked, and toggles expanded property
   const currentItem = this.findById(id);
   console.log(currentItem);
   currentItem.expanded = !currentItem.expanded;
 }
 
 function findAndDelete(id) {
+//Finds corresponding id for delete button clicked, and deletes from the store
   this.bookmarks = store.bookmarks = store.bookmarks.filter(currentItem => currentItem.id !== id);
   console.log(store.bookmarks);
 }
 
 function findById(id) {
+//returns the item in store with matching bookmarks.id
   console.log('findById ran');
   return this.bookmarks.find(currentItem => currentItem.id === id);
 }

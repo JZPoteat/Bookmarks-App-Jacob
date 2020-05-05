@@ -2,6 +2,7 @@ import store from './store.js';
 import api from './api.js';
 
 function render() {
+  //renders the DOM
   console.log(store.bookmarks);
   console.log("Render Function ran");
   let bookmarks = [...store.bookmarks];
@@ -10,10 +11,12 @@ function render() {
     html += generateAddForm();
   }
   else if (store.filter !== 0) {
-    html += generateButtons() + filterByRating(bookmarks);  
+    $('.button-area').html(`${generateButtons()}`);
+    html +=filterByRating(bookmarks);  
   }
   else {
-    html += generateButtons() + generateBookmarkItemString(bookmarks);  
+    $('.button-area').html(`${generateButtons()}`);
+    html += generateBookmarkItemString(bookmarks);  
   }
   $('main').html(html);  
 }
@@ -47,8 +50,10 @@ function filterByRating(bookmarks) {
 
 function handleFilterSelector() {
   //Defines an event listener that listens for when the user selects a filter, and changes the DOM appropriately
-  $('main').change('.Rating-list', event => {
-    const newRating = $('.Rating-list').val();
+  $('.button-area').change( function() {
+    console.log('filter selector ran');
+    const newRating = $('option:selected').val();
+    console.log(newRating);
     store.filter = newRating;
     render();
   });
@@ -61,7 +66,7 @@ function generateButtons() {
   return `<section class="buttons">
   <button type="button" class="add-button">Add bookmark</button>
   <section class="rating-filter">Filter by:
-      <select class="Rating-list">
+      <select id="Rating-list">
           ${generateFilterList()}  
       </select>
     </section>
@@ -78,9 +83,10 @@ function generateFilterList() {
 }
 function handleAddBookmarkButton() {
 //Defines event listener for when the user clicks the add button, toggles store.adding and renders the page
-  $('main').on('click','.add-button', event => {
+  $('.button-area').on('click','.add-button', event => {
     console.log("button clicked");
     toggleStoreAdding();
+    $('.button-area').empty();
     render();
   });
 }
@@ -107,6 +113,8 @@ function clearBookmarkForm () {
 
 
 function handleNewItemSubmit () {
+//Establishes event listener for submitting the new bookmark.
+//Function must convert form entries into Json string, 
   console.log('handleNewItemSubmit called');
   $('main').submit('#bookmark-form', function (event) {
     event.preventDefault();
@@ -149,7 +157,7 @@ function serializeJson(form) {
 function generateExpandedItem(item) {
   return `<section class='bookmark-element expanded-item'>
                 <li data-item-id=${item.id}>${item.title}</li>
-                <li data-item-id=${item.id}>${item.rating}</li>
+                <li data-item-id=${item.id}>${item.rating}/5</li>
                 <li data-item-id=${item.id}><a href='${item.url}' target='_blank'>${item.url}</a></li>
                 <li data-item-id=${item.id}>${item.desc}</li>
                 <button type="button" class="delete-button" data-item-id=${item.id}>Delete bookmark</button>
@@ -171,7 +179,7 @@ function generateBookmarkItemString (bookmarkList) {
 }
   
 function generateBookmarkElement(item) {
-  return `<li class="bookmark-element" data-item-id=${item.id}>${item.title}:   ${item.rating}</li>`;
+  return `<li class="bookmark-element" data-item-id=${item.id}>${item.title}:   ${item.rating}/5</li>`;
 }
 
 function handleBookmarkClick() {
@@ -194,10 +202,14 @@ function handleDeleteItemClicked () {
       .then(() => {
         store.findAndDelete(id);
         render();
+      })
+      .catch(error => {
+        $('main').prepend(generateError(error.message));
+        console.error(error);
       });
-
   });
 }
+
 
 
 function getItemIdFromElement(item) {
