@@ -2,7 +2,7 @@
 
 This application collects your favorite bookmarks.
 
-Live link:  
+Live link:  https://thinkful-ei-orka.github.io/Bookmarks-App-Jacob/.
 
 ## User Stories completed:
 
