@@ -16,7 +16,4 @@ function main() {
 $(main);
 
 
-//Error handling.  Is it sufficient?
-//Revert filter back to normal state?
-//Last styling tweaks
 
