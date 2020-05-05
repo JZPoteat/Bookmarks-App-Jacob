@@ -3,6 +3,7 @@ import api from './api.js';
 
 function render() {
   //renders the DOM
+  renderError();
   console.log(store.bookmarks);
   console.log("Render Function ran");
   let bookmarks = [...store.bookmarks];
@@ -19,6 +20,18 @@ function render() {
     html += generateBookmarkItemString(bookmarks);  
   }
   $('main').html(html);  
+}
+
+function renderError() {
+//Checks to see if the store has an error.  If so, then render html on the page.
+  if (store.error) {
+    const el = generateError(store.error);
+    $('.error-container').html(el);
+  } 
+  else {
+    $('.error-container').empty();
+  }
+  console.log(store.error);
 }
 
 function generateAddForm() {
@@ -128,25 +141,29 @@ function handleNewItemSubmit () {
         render();
       })
       .catch(error => {
-        $('main').prepend(generateError(error.message));
-        console.error(error);
+        store.setError(error.message);
+        renderError();
       });
   });
 }
 
 function generateError(message) {
-//generates HTML required for 
-  return `<p class="error-container">${message}<br>Please try again.</p>`;
+//generates HTML string for error message displayed in the DOM
+  return `<section class="error-message">${message}<br>Please click inside the red box and try again.</section>`; 
 }
 
 function handleCloseError() {
 //removes error statement from the page
-  $('main').on('click','.error-container', () => {
-    $('.error-container').empty();
+  $('.error-container').on('click','.error-message', () => {
+    store.setError(null);
+    renderError();
   });
 }
 
+
+
 function serializeJson(form) {
+  //Retrieves inputs from the form, converts the Json to string and returns the string.
   const formData = new FormData(form);
   const o = {};
   formData.forEach((val, name) => o[name] = val);
@@ -155,6 +172,7 @@ function serializeJson(form) {
 
 
 function generateExpandedItem(item) {
+//Returns HTML that generates the expanded item.
   return `<section class='bookmark-element expanded-item'>
                 <li data-item-id=${item.id}>${item.title}</li>
                 <li data-item-id=${item.id}>${item.rating}/5</li>
@@ -165,6 +183,7 @@ function generateExpandedItem(item) {
 }
   
 function generateBookmarkItemString (bookmarkList) {
+//Provides logic for generating string of expanded and condensed bookmark elements
   let html = '';
   bookmarkList.forEach((item) => {
     if (item.expanded) {
@@ -179,10 +198,12 @@ function generateBookmarkItemString (bookmarkList) {
 }
   
 function generateBookmarkElement(item) {
+//Generates one condensed bookmark element
   return `<li class="bookmark-element" data-item-id=${item.id}>${item.title}:   ${item.rating}/5</li>`;
 }
 
 function handleBookmarkClick() {
+//Event listener for Toggling the expanded and condensed view
   $('main').on('click', 'li', event => {
     console.log('li item clicked!');
     const id = getItemIdFromElement(event.currentTarget);
@@ -194,6 +215,7 @@ function handleBookmarkClick() {
 }  
 
 function handleDeleteItemClicked () {
+//Event listener for when the delete button is clicked.  It must make call to api, and change store.bookmarks
   $('main').on('click','.delete-button', event => {
     console.log('delete button clicked');
     const id = getItemIdFromDeleteButton(event.currentTarget);
@@ -204,23 +226,22 @@ function handleDeleteItemClicked () {
         render();
       })
       .catch(error => {
-        $('main').prepend(generateError(error.message));
-        console.error(error);
+        console.log(error);
+        store.setError(error.message);
+        renderError();
       });
   });
 }
 
-
-
 function getItemIdFromElement(item) {
+//Gets data-item-id from closest li element
   return $(item).closest('li').data('item-id');
 }
 
 function getItemIdFromDeleteButton(item) {
+//Gets data-item-id stored on delete button
   return $(item).closest('.delete-button').data('item-id');
 }
-
-
 
 function bindEventListeners () {
   console.log('bindEventListeners called');

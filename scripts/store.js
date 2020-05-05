@@ -32,12 +32,18 @@ function findById(id) {
   return this.bookmarks.find(currentItem => currentItem.id === id);
 }
 
+function setError(error) {
+  this.error = error;
+}
+
 export default {
   bookmarks: store.bookmarks,
   adding: store.adding,
   filter: store.filter,
+  error: store.error,
   addBookmark,
   findAndToggleExpanded,
   findById,
+  setError,
   findAndDelete,
 };

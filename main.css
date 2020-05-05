@@ -45,6 +45,10 @@ button:hover {
   background-color: tomato;
   border-radius: 6px;
 }
+
+.error-messge {
+  text-align: center;
+}
 #main-title {
   font-family: 'Hind Vadodara', sans-serif;
 }
