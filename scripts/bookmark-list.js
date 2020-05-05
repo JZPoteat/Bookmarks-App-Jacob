@@ -176,7 +176,7 @@ function generateExpandedItem(item) {
   return `<section class='bookmark-element expanded-item'>
                 <li data-item-id=${item.id}>${item.title}</li>
                 <li data-item-id=${item.id}>${item.rating}/5</li>
-                <li data-item-id=${item.id}><a href='${item.url}' target='_blank'>${item.url}</a></li>
+                <li data-item-id=${item.id}>Visit site:  <a href='${item.url}' target='_blank'>${item.url}</a></li>
                 <li data-item-id=${item.id}>${item.desc}</li>
                 <button type="button" class="delete-button" data-item-id=${item.id}>Delete bookmark</button>
               </section>`;
