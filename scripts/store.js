@@ -13,11 +13,11 @@ function addBookmark(item) {
   console.log(store.bookmarks);
 }
 
-function findAndToggleExpanded(id) {
+function findAndToggleExpanded(id, newData) {
   //Finds the id for item clicked, and toggles expanded property
   const currentItem = this.findById(id);
-  console.log(currentItem);
-  currentItem.expanded = !currentItem.expanded;
+  Object.assign(currentItem, newData);
+
 }
 
 function findAndDelete(id) {

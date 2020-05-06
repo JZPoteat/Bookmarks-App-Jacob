@@ -31,7 +31,7 @@ function renderError() {
   else {
     $('.error-container').empty();
   }
-  console.log(store.error);
+  console.log('Error:  ' + store.error);
 }
 
 function generateAddForm() {
@@ -173,7 +173,8 @@ function serializeJson(form) {
 
 function generateExpandedItem(item) {
 //Returns HTML that generates the expanded item.
-  return `<section class='bookmark-element expanded-item'>
+  return `
+              <section class='bookmark-element expanded-item'>
                 <li data-item-id=${item.id}>${item.title}</li>
                 <li data-item-id=${item.id}>${item.rating}/5</li>
                 <li data-item-id=${item.id}>Visit site:  <a href='${item.url}' target='_blank'>${item.url}</a></li>
@@ -187,6 +188,7 @@ function generateBookmarkItemString (bookmarkList) {
   let html = '';
   bookmarkList.forEach((item) => {
     if (item.expanded) {
+      console.log('generating expanded')
       html += generateExpandedItem(item);
     }
     else {
@@ -207,9 +209,11 @@ function handleBookmarkClick() {
   $('main').on('click', 'li', event => {
     console.log('li item clicked!');
     const id = getItemIdFromElement(event.currentTarget);
+    const currItem = store.findById(id);
+    const newData = { expanded: !currItem.expanded};
     console.log(event.currentTarget);
     console.log(id);
-    store.findAndToggleExpanded(id);
+    store.findAndToggleExpanded(id, newData);
     render();
   });
 }  
