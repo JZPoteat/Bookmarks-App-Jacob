@@ -6,15 +6,18 @@ function render() {
   renderError();
   console.log(store.bookmarks);
   console.log("Render Function ran");
-  let bookmarks = [...store.bookmarks];
+  // let bookmarks = [...store.bookmarks];
+  let bookmarks = store.bookmarks.filter(bookmark => {
+    return bookmark.rating >= store.filter;
+  });
   let html = '';
   if(store.adding) {
     html += generateAddForm();
   }
-  else if (store.filter !== 0) {
-    $('.button-area').html(`${generateButtons()}`);
-    html +=filterByRating(bookmarks);  
-  }
+  //else if (store.filter !== 0) {
+  //  $('.button-area').html(`${generateButtons()}`);
+  //  html +=filterByRating(bookmarks);  
+  //}
   else {
     $('.button-area').html(`${generateButtons()}`);
     html += generateBookmarkItemString(bookmarks);  
@@ -63,7 +66,7 @@ function filterByRating(bookmarks) {
 
 function handleFilterSelector() {
   //Defines an event listener that listens for when the user selects a filter, and changes the DOM appropriately
-  $('.button-area').change( function() {
+  $('.button-area').change(function() {
     console.log('filter selector ran');
     const newRating = $('option:selected').val();
     console.log(newRating);
@@ -96,8 +99,8 @@ function generateFilterList() {
 }
 function handleAddBookmarkButton() {
 //Defines event listener for when the user clicks the add button, toggles store.adding and renders the page
-  $('.button-area').on('click','.add-button', event => {
-    console.log("button clicked");
+  $('body').on('click','.add-button', event => {
+    console.log("Add button clicked");
     toggleStoreAdding();
     $('.button-area').empty();
     render();
